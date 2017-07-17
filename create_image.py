@@ -50,12 +50,23 @@ def get_layer_and_coor_list(layout_string):
 
 	return list_return
 
+def draw_layout(layout_string, image_obj):
+	list_layout = get_layer_and_coor_list(layout_string)
+	# create a drawing object that is RGBA
+	draw = ImageDraw.Draw(im, 'RGBA')   
+
+	for shape in list_layout:
+		layer = shape[0]
+		coor_list = shape[1]
+		draw_rectangle(draw, layer, coor_list, size)
+	
+	del draw
+
+
 if __name__ == '__main__':
 	print('Start~')
 	
-	layout_string = '6.0@50_50_300_100,17.0@100_0_150_200'
-
-	list_layout = get_layer_and_coor_list(layout_string)
+	layout_string = '6.0@50_50_300_100,17.0@100_0_150_200,17.0@200_0_250_200'
 
 	# size of the image to create
 	size = (500,300)       
@@ -63,17 +74,7 @@ if __name__ == '__main__':
 	# create the image 
 	im = Image.new('RGB', size) 
 
-	# create a drawing object that is RGBA
-	draw = ImageDraw.Draw(im, 'RGBA')   
-
-	for shape in list_layout:
-		layer = shape[0]
-		print(layer)
-		coor_list = shape[1]
-		print(coor_list)
-		draw_rectangle(draw, layer, coor_list, size)
-	
-	del draw
+	draw_layout(layout_string, im )
 
 	# write to stdout
 	im.save("ccc.png", "PNG")
